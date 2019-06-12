@@ -1,0 +1,66 @@
+{
+  "order": 5,
+  "index_patterns": ["*"],
+  "mappings": {
+    "_default_": {
+      "dynamic_templates": [
+
+        {
+          "timing": {
+            "path_match": "metadata.timing.*",
+            "match_mapping_type": "long",
+            "match": "ts_*",
+            "mapping": {
+              "type": "date",
+              "format": "epoch_millis||epoch_second"
+            }
+          }
+        },
+
+        {
+          "kafka_strings": {
+            "path_match": "kafka.*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+
+        {
+          "kafka_numerics": {
+            "path_match": "kafka.*",
+            "match_mapping_type": "long",
+            "unmatch": "timestamp",
+            "mapping": {
+              "type": "long"
+            }
+          }
+        },
+
+        {
+          "kafka_timestamps": {
+            "path_match": "kafka.*",
+            "match_mapping_type": "long",
+            "match": "timestamp",
+            "mapping": {
+              "type": "date",
+              "format": "epoch_millis||epoch_second"
+            }
+          }
+        },
+
+        {
+          "filebeat_strings": {
+            "path_match": "beat.*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        }
+
+      ]
+    }
+  }
+}

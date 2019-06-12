@@ -1,0 +1,33 @@
+{
+  "order": 20,
+  "version": 1,
+  "template": "mysql-slow-session-*",
+  "aliases": {
+    "request-id": {}
+  },
+  "settings": {
+    "index": {
+      "mapping": {
+        "total_fields": {
+          "limit": 5000
+        }
+      }
+    }
+  },
+  "mappings": {
+    "doc": {
+      "dynamic": true,
+      "dynamic_templates": [
+        {
+          "context": {
+            "path_match": "summary.metrics.*",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        }
+      ]
+    }
+  }
+}

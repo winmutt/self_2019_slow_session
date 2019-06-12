@@ -1,0 +1,94 @@
+{
+  "order": 20,
+  "version": 1,
+  "template": "mysql-slow-query-*",
+  "mappings": {
+    "doc": {
+      "numeric_detection": true,
+      "dynamic": true,
+      "dynamic_templates": [
+        {
+          "context": {
+            "path_match": "metrics.*.avg",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "context": {
+            "path_match": "metrics.*.max",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "context": {
+            "path_match": "metrics.*.median",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "context": {
+            "path_match": "metrics.*.min",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "context": {
+            "path_match": "metrics.*.pct",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "context": {
+            "path_match": "metrics.*.pct_95",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "context": {
+            "path_match": "metrics.*.stddev",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "context": {
+            "path_match": "metrics.*.sum",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "context": {
+            "path_match": "query_count",
+            "mapping": {
+              "type": "float"
+            },
+            "match_mapping_type": "string"
+          }
+        }
+      ]
+    }
+  }
+}

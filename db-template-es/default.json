@@ -1,0 +1,190 @@
+{
+  "order": 0,
+  "template": "*",
+  "settings": {
+    "index": {
+      "mapper": {
+        "dynamic": "true"
+      },
+      "unassigned": {
+        "node_left": {
+          "delayed_timeout": "5m"
+        }
+      },
+      "analysis": {
+        "analyzer": {
+          "path_hierarchy_analyzer": {
+            "type": "custom",
+            "tokenizer": "path_hierarchy_tokenizer"
+          }
+        },
+        "tokenizer": {
+          "path_hierarchy_tokenizer": {
+            "type": "path_hierarchy",
+            "delimiter": "/"
+          }
+        }
+      },
+      "search": {
+        "slowlog": {
+          "level": "info",
+          "threshold": {
+            "query": {
+              "warn": "30s",
+              "trace": "15s",
+              "debug": "10s",
+              "info": "0ms"
+            }
+          }
+        }
+      },
+      "number_of_shards": "1"
+    }
+  },
+  "mappings": {
+    "_default_": {
+      "dynamic": true,
+      "dynamic_templates": [
+        {
+          "doubles": {
+            "mapping": {
+              "ignore_above": 1024,
+              "type": "keyword",
+              "fields": {
+                "analyzed": {
+                  "norms": false,
+                  "type": "text"
+                },
+                "numeric": {
+                  "coerce": true,
+                  "scaling_factor": 10000,
+                  "ignore_malformed": true,
+                  "type": "scaled_float"
+                }
+              }
+            },
+            "match_mapping_type": "double"
+          }
+        },
+        {
+          "longs": {
+            "mapping": {
+              "ignore_above": 1024,
+              "type": "keyword",
+              "fields": {
+                "analyzed": {
+                  "norms": false,
+                  "type": "text"
+                },
+                "numeric": {
+                  "coerce": true,
+                  "scaling_factor": 10000,
+                  "ignore_malformed": true,
+                  "type": "scaled_float"
+                }
+              }
+            },
+            "match_mapping_type": "long"
+          }
+        },
+        {
+          "strings": {
+            "mapping": {
+              "ignore_above": 1024,
+              "type": "keyword",
+              "fields": {
+                "analyzed": {
+                  "norms": false,
+                  "type": "text"
+                }
+              }
+            },
+            "match_mapping_type": "string"
+          }
+        }
+      ],
+      "properties": {
+        "role": {
+          "type": "keyword"
+        },
+        "offset": {
+          "type": "long"
+        },
+        "project": {
+          "type": "keyword"
+        },
+        "source": {
+          "type": "keyword",
+          "fields": {
+            "analyzed": {
+              "norms": false,
+              "analyzer": "path_hierarchy_analyzer",
+              "type": "text"
+            }
+          }
+        },
+        "env": {
+          "type": "keyword"
+        },
+        "message": {
+          "norms": false,
+          "type": "text"
+        },
+        "tags": {
+          "type": "keyword",
+          "fields": {
+            "analyzed": {
+              "norms": true,
+              "analyzer": "simple",
+              "type": "text"
+            }
+          }
+        },
+        "elasticsearch_index": {
+          "type": "keyword"
+        },
+        "subproject": {
+          "type": "keyword"
+        },
+        "@timestamp": {
+          "type": "date"
+        },
+        "kafka": {
+          "properties": {
+            "consumer_group": {
+              "type": "keyword"
+            },
+            "partition": {
+              "type": "long"
+            },
+            "offset": {
+              "type": "long"
+            },
+            "topic": {
+              "type": "keyword"
+            },
+            "key": {
+              "type": "keyword"
+            },
+            "msg_size": {
+              "type": "long"
+            }
+          }
+        },
+        "statsd_app": {
+          "type": "keyword",
+          "fields": {
+            "analyzed": {
+              "norms": false,
+              "type": "text"
+            }
+          }
+        },
+        "dc": {
+          "type": "keyword"
+        }
+      }
+    }
+  },
+  "aliases": {}
+}
