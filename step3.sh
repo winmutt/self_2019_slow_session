@@ -2,6 +2,7 @@
 clear
 
 while true; do
+  # prep the slow query log
   echo "Truncating slow query log"
   > `mysql -NBe "select @@slow_query_log_file"`
 
@@ -12,8 +13,8 @@ while true; do
   for x in `seq 1 5`; do
     rnd_number=$((RANDOM%10))
     for y in `seq 1 $rnd_number`; do
-       cat  ~/self_19/queries.sql
-    done | mysql > /dev/null
+       cat /root/self_19/queries.sql
+    done | { cat; echo "SET @sql_context_injection='{REQUEST_URI:\"/$((RANDOM))\"}';"; } # | mysql > /dev/null
     echo -n "."
   done;
   mysql < ~/self_19/queries.sql > /dev/null
@@ -22,6 +23,7 @@ while true; do
   mysql -Ne "set global slow_query_log='OFF'; set global long_query_time=10;"
   ls -l `mysql -NBe "select @@slow_query_log_file"`
 
+  # start of pt-query-digest by session
   rm -rf /tmp/localhost-slow.log.thread_id* &> /dev/null
   mkdir /tmp/localhost_slow_thread_id &> /dev/null
   echo "Processing slow log info by thread_id into JSON format, to identify top sessions"
@@ -44,7 +46,7 @@ while true; do
     context=$( sed -rne "s|^SET @sql_context_injection='(.*)';|\\1|p" "/tmp/localhost-slow.log.thread_id.${x}" | \
       sed 's|\\"|"|g' | sed 's|\\/|/|g' | \
       jq -c ".thread_id=\"${x}\"" )
-      
+
     if [ -z "$context" ]; then
      context="{}"
     fi;
@@ -53,9 +55,7 @@ while true; do
     jq -c "{pqd_output: .classes, summary: .global, context: $context, instance_name: \"self_19\"}" \
       "/tmp/localhost-slow.log.thread_id.${x}.pqd.json" > "/tmp/localhost_slow_thread_id/${x}.pqd.json"
   done;
- 
+
   ls -l /var/log/mysql_slow_log_analysis.json
   sleep 5;
-done; 
-
-
+done;
