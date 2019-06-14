@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 clear
 
 echo "+==================+"
@@ -30,8 +31,11 @@ clear
 echo "+========================+"
 echo "|Slow Query Log Variables|"
 echo "+========================+"
+echo
 > `mysql -NBe "select @@slow_query_log_file"`
+echo '# truncate the slow query log file'
 echo '> `mysql -NBe "select @@slow_query_log_file"`'
+echo 
 mysql -vvve "show global variables like 'slow_query%'; show global variables like 'long%';"
 read -p '$ '
 clear
@@ -63,10 +67,6 @@ cat <<map
 map
 
 echo -n "Running some fun queries "
-for x in {1..20}; do
-  mysql < ~/self_19/queries.sql > /dev/null
-  echo -n "."
-done;
 mysql < ~/self_19/queries.sql > /dev/null
 echo "."
 read -p '$ '

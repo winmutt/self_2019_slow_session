@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 clear
 
 echo "+==================+"
@@ -41,13 +42,13 @@ eof
 read -p '$ '
 clear
 
-while true; do
+for t in {1..10}; do
   echo "Truncating slow query log"
   > `mysql -NBe "select @@slow_query_log_file"`
   echo "Turning on slow query log"
   mysql -Ne "set global long_query_time=0; set global slow_query_log='ON';"
   echo -n "Running some fun queries "
-  rnd_number=$((RANDOM/1000))
+  rnd_number=$((RANDOM%5))
   for x in `seq 1 $rnd_number`; do
     mysql < ~/self_19/queries.sql > /dev/null
     echo -n "."
@@ -66,4 +67,5 @@ while true; do
   sleep 5;
 done; 
 
+./step3.sh
 
