@@ -5,6 +5,7 @@ This was a talk I gave at SELF 2019 which included 3 live demos where we:
 2. Reviewed a raw pt-query-digest report.
 3. Shipped pt-query-digest JSON reports into ES from filebeat.
 4. Reviewed how we aggregate pt-query-digest reports by session rather than query.
+5. Built various visualizations of the aggregated reports and discussed the usefulness of context injection into the sql logs.
 
 These demos were run on a 4G VM on laptop with the following software:
 
