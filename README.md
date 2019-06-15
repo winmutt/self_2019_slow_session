@@ -10,13 +10,21 @@ This was a talk I gave at SELF 2019 which included 3 live demos where we:
 These demos were run on a 4G VM on laptop with the following software:
 
 > CentOS Linux release 7.6.1810 (Core)
+
 > Percona-Server-shared-57-5.7.10-3.1.el7.x86_64
+
 > Percona-Server-shared-compat-57-5.7.10-3.1.el7.x86_64
+
 > Percona-Server-client-57-5.7.10-3.1.el7.x86_64
+
 > Percona-Server-server-57-5.7.26-29.1.el7.x86_64
+
 > elasticsearch-6.8.0-1.noarch
+
 > kibana-6.8.0-1.x86_64
+
 > filebeat-6.8.0-1.x86_64
+
 > jq - commandline JSON processor [version 1.6]
 
 These were largely default installs with the exception of filebeat who's relevant config files I have included in the etc directory here. We had 2 instances of filebeat running two ship to the two different ES indexes used, `mysql-slow-query` and `mysql-slow-session`
